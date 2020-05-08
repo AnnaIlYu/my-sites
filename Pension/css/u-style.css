@@ -1,0 +1,20 @@
+body{
+  background-image: url("../img/1.jpg");
+}
+
+.u-section {
+	background-color: rgba(0, 0, 0, 0.63);
+  box-shadow: 0 -3.7px 0 #95dbe8;
+	color: white;
+	 width: 800px;
+  height: 585px;
+  padding: 55px;
+  margin: 50px auto;
+  color: white;
+  font-size: 18px;
+}
+
+li {
+	list-style: square;
+	line-height: 30px;
+}

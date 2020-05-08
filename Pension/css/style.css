@@ -1,0 +1,89 @@
+
+
+body{
+  background-image: url("../img/1.jpg");
+}
+
+.self-employed {
+  background-color: rgba(0, 0, 0, 0.63);
+  box-shadow: 0 -3.7px 0 #95dbe8;
+  width: 630px;
+  height: 870px;
+  padding: 80px;
+  margin: 50px auto;
+  color: white;
+}
+
+.info {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0 0 20px 0;
+  font-size: 22px;
+}
+
+.info h2 {
+  margin: 10px 0 30px 0;
+}
+
+.info h3 {
+  margin: 20px;
+}
+
+.info a {
+  color: white;
+}
+
+.ishodnye-dannye {
+
+}
+
+.buttons{
+  width: 100%;
+  box-sizing: border-box;
+  height: 50px;
+  margin: 5px 0;
+  float: left;
+  padding: 0 5px;
+}
+
+.button {
+  width: 50%;
+  height: 50px;
+  float: left;
+  margin: 0;
+  background: orange;
+  font-size: 20px;
+  border: 3px solid ;
+  border-color: darkorange;
+}
+
+.res {
+
+}
+
+.item {
+  width: 200px;
+  height: 200px;
+  float: left;
+  padding: 10px 10px 10px 10px;
+  border: 0;
+  margin: 5px;
+  box-sizing: border-box;
+  background: #c8d0d0;
+  color: black;
+}
+
+.res__pfrf__item, .res__bank__item  {
+
+  width: 172px;
+  height: 100px;
+}
+
+label {
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+}
+
+

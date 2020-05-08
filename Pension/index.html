@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html" charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/style.css">  
+</head>
+<body>
+	<form class="self-employed">
+		<section class="info">
+			<h2>Пенсионный калькулятор самозанятого</h2>
+			<h3>Что выгоднее: делать отчисления в ПФ РФ или положить эти деньги в банк?</h3>
+			<a href="usloviya.html" target="_blank">(Перед расчетами мы приняли эти условия)</a>
+		</section>
+	<!-- Блок с исходными данными  -->
+		<section class="ishodnye-dannye">
+	<!-- Данные для расчета страховой пенсии по старости -->
+	<!-- Считаем, что накопительной нет -->
+			<div class="item">
+				<input type="number" id="zp" name="in-data" value="0">
+				<label for="zp">зарплата в месяц, руб.</label>
+			</div>
+			<div class="item">
+				<input type="number" id="chislo-let" name="in-data" value="0">
+				<label for="chislo-let">предполагаемая длительность пенсии, лет :)</label>
+			</div>
+	<!-- Данные для расчета денег на банковском вкладе-->
+			<div class="item">
+				<input type="number" id="percent" name="in-data" value="0">
+				<label for="percent">% годовых по вкладу</label>
+			</div>
+		</section> <!-- ishodnye-dannye -->
+
+	<!-- Кнопка для произведения расчета-->
+	 	<section class="buttons">
+			<input class="button" type="button" onclick="calc()" id="calculate" value="УЗНАТЬ РЕЗУЛЬТАТ">
+		<!-- Кнопка для очистки полей -->
+			<input class="button" type="reset" value="ОЧИСТИТЬ ФОРМУ">
+		</section>
+
+	<!-- Блок с результатами расчета-->
+		<section class="res">
+	<!--  Результаты по расчету пенсии от государства-->
+			<div class="res__pfrf">
+				<div class="item">
+					<input class="res__pfrf__item" type="text" id="mes-otchisl" name="out-data">
+					<label for="mes-otchisl">отчисления в ПФ с зарплаты, руб./мес.</label>
+				</div>
+				<div class="item">
+					<input class="res__pfrf__item" type="text" id="year-points" name="out-data">
+					<label for="year-points">баллов за 1 год</label>
+				</div>
+				<div class="item">
+					<input class="res__pfrf__item" type="text" id="points" name="out-data">
+					<label for="points">сумма баллов за период трудовой деятельности</label>
+				</div>
+				<div class="item" style="background: #81DAF5">
+					<input class="res__pfrf__item" type="text" id="pension">
+					<label for="pension">ваша пенсия, руб./мес.</label>
+				</div>
+			</div> <!-- rez__pfrf -->
+
+	<!-- Результаты по расчету банковского вклада -->
+			<div class="res__bank">
+				<div class="item">
+					<input class="res__bank__item" type="text" id="nakopleno" name="out-data">
+					<label for="nakopleno">сумма накоплений в банке</label>
+				</div>
+				<div class="item" style="background: #81DAF5">
+					<input class="res__bank__item" type="text" id="take" name="out-data"> 
+					<label for="nakopleno">в месяц вы сможете снимать со вклада, руб.</label>
+				</div>
+			</div>
+		</section>   <!-- res -->
+	</form>
+</body>
+</html>
+
+
+<script type="text/javascript">
+ //Функция расчета того, что выгоднее: отчисления на пенсию от государства или вложение этих же денег в банк. 
+	function calc()
+		{
+			// Произведем рассчеты по пенсии:
+			var years=15; // считаем в среднем за весь стаж и берем его равным 15 годам
+			var zp=document.getElementById("zp").value; // подтягиваем величину месячной зарплаты на руки
+			var chl=document.getElementById("chislo-let").value;  // подтягиваем теоретическое число лет жизни на пенсии
+			var P=document.getElementById("percent").value/100;		// подтягиваем процент годовых по банковскому вкладу	
+
+			if((zp!=0) && (chl!=0) && (P!=0)) // проверка на то, ввел ли пользователь исходные данные
+			{
+				var zpGross=zp/0.87;  // считаем зарплату гросс
+				var FSS=zpGross*0.22; // считаем величину ежемесячныйх отчислений работодателя в ФСС (те же деньги потом "положим" в банк)
+				var NSV=1292000;   // нормативный размер страховых взносов за год 
+				var IPK1=FSS*12/NSV/0.22*10; //считаем количество баллов за 1 год
+				var IPK=IPK1*years;
+
+				var SPK2020=93; // стоимость 1 балла в 2020 году
+				var kPoint=1.0552;  // средний ежегодный коэффициент индексации 1 балла
+				var x=Math.pow(kPoint,years);
+				var SPK=SPK2020*x; // ориентировочная стоимость 1 балла в году начала выплаты пенсии
+
+				var FV2020=5686.25;  // фиксированная государственная выплата к пенсии в 2020 году 
+				var kFV=1.05;  //средний ежегодный коэффициент индексации фиксированной выплаты
+				var y=Math.pow(kFV,years);
+				var FV=FV2020*y; // ориентировочная величина фиксированной выплаты в году начала выплаты пенсии
+
+				var SP=IPK*SPK + FV;
+				
+				// Произведем расчеты по банковскому вкладу:
+				var m=P+1; //делаем множитель сложных процентов
+					
+				
+				var sumYear=FSS*12;
+				var stable=FSS*12; // эти деньги мы будем ежегодно вносить на счет
+				for (var i=1;i<years;i++)  //оборотов на 1 меньше, чем лет, т.к. в 1м году мы только кладем сумму, прирост идет в конце 1го года, условно в начале 2го
+				{
+					sumYear=sumYear*m+stable;
+				}
+				sum=sumYear;
+				var take=sum/chl/12;
+
+				// Выведем результаты:
+				document.getElementById("mes-otchisl").value=FSS;
+				document.getElementById("year-points").value=IPK1;
+				document.getElementById("points").value=IPK;
+				document.getElementById("pension").value=SP;
+				document.getElementById("nakopleno").value=sum;
+				document.getElementById("take").value=take;
+			}
+
+			else
+				alert ("Введите исходные данные!");
+			
+		}
+
+</script>
+
+
+
+
+
+<!--
+
+	Пример с сайта
+
+	<div class="ectroni_secause">
+ 		 <img src="http://zornet.ru/ABVUN/men.png">
+  		<form>
+  			<div class="earnin_rongsales">
+  				<input type="text" name="username" placeholder="Введите логин">
+  			</div>
+  			<div class="earnin_rongsales">
+  				<input type="password" name="password" placeholder="Введите пароль">
+ 			</div>
+ 			<input class="reenasen_sorsadios" type="submit" name="submit" value="ВОЙТИ">
+
+  			<a href="#">Восстановить пароль</a>
+  		</form>
+  		<div class="processing_powerare">
+  			  <i class="fa fa-vk" aria-hidden="true"></i>
+			  <i class="fa fa-twitter" aria-hidden="true"></i>
+			  <i class="fa fa-facebook" aria-hidden="true"></i>
+			  <i class="fa fa-google-plus-official" aria-hidden="true"></i>
+			  <i class="fa fa-odnoklassniki" aria-hidden="true"></i>
+  		</div>
+	</div> 
+</body>
+</html>
+
+
+-->
