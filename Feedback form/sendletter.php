@@ -44,7 +44,7 @@
           {
               //проверяем капчу и переходим к отправке письма
               $url_to_google_api = "https://www.google.com/recaptcha/api/siteverify";
-              $secret_key = '6LfiFZ8UAAAAAEdkYmGPiV_efDe0ErmYpIBBf9p4';
+              $secret_key = 'addSecretKeyHere';
               $query = $url_to_google_api . '?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response'] . '&remoteip=' . $_SERVER['REMOTE_ADDR'];
               $data = json_decode(file_get_contents($query));
               //если  капча пройдена успешно
